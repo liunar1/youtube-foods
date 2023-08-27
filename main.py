@@ -3,7 +3,7 @@ import openai
 from flask import Flask, request, jsonify
 import youtube
 
-# openai.api_key = "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"
+# openai.api_key = "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"
 # openai.FineTuningJob.create(training_file="", model="gpt-3.5-turbo")
 
 # youtubeapi_key = "AIzaSyCRwo-aM1cGNtjO-x9yJHqt_rCYE3TnqWs"
