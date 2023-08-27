@@ -2,11 +2,14 @@
 import openai
 from flask import Flask, request, jsonify
 import youtube
+import json
 
-# openai.api_key = "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"
-# openai.FineTuningJob.create(training_file="", model="gpt-3.5-turbo")
-
-# youtubeapi_key = "AIzaSyCRwo-aM1cGNtjO-x9yJHqt_rCYE3TnqWs"
+openai.api_key = ""
+with open("secrets.json", "r") as jsonFile:
+    jsonData = json.loads(jsonFile)
+    openai.api_key = jsonData["gpt_key"]
+    youtubeapi_key = jsonData["youtube_key"]
+openai.FineTuningJob.create(training_file="", model="gpt-3.5-turbo")
 
 app = Flask(__name__)
 
