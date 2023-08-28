@@ -43,22 +43,10 @@ public class ParseJSON {
         return content.toString();
     }
 
-    public void editJSON(Context context, JSONObject jsonObject, String file) throws IOException {
+    public void editJSONFile(Context context, JSONObject jsonObject, String file) throws IOException {
         FileOutputStream fileOutputStream = context.openFileOutput(file, Context.MODE_PRIVATE);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
         outputStreamWriter.write(jsonObject.toString());
         outputStreamWriter.close();
     }
-
-//    public void appendToJsonFile(Context context, JSONObject newData, String fileName) throws IOException, JSONException {
-//        JSONObject existingData = readJSON(context, fileName);
-//        mergeJSON(existingData, newData);
-//        editJSON(context, existingData, fileName);
-//    }
-
-//    private static void mergeJSON(JSONObject target, JSONObject source) throws JSONException {
-//        for (String key : source.keySet()) {
-//            target.put(key, source.get(key));
-//        }
-//    }
 }
