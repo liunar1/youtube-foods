@@ -3,10 +3,10 @@ package com.example.foodapp;
 import android.content.Context;
 
 import org.json.JSONException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -14,22 +14,33 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class ParseJSON {
-    public JSONObject readJSON(Context context, String file) throws FileNotFoundException {
+    public JSONObject readJSONString(Context context, String jsonString) {
+        JSONObject jsonObject = null;
         try {
-            Object object = new JSONParser().parse(new FileReader(file));
+            jsonObject = new JSONObject(jsonString);
+            // Now you can work with the jsonObject
+            String value1 = jsonObject.getString("key1");
+            String value2 = jsonObject.getString("key2");
 
-            if (object instanceof JSONObject) {
-                JSONObject jsonObject = (JSONObject) object;
-            } else if (object instanceof JSONArray) {
-                JSONArray jsonArray = (JSONArray) object;
-            } else {
-                System.out.println("Invalid JSON data");
-            }
-        }
-        catch (Exception e) {
+            System.out.println("Value 1: " + value1);
+            System.out.println("Value 2: " + value2);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return jsonObject;
+    }
+
+    public String readJSONFile(Context context, String filePath) throws IOException {
+        StringBuilder content = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+        }
+
+        return content.toString();
     }
 
     public void editJSON(Context context, JSONObject jsonObject, String file) throws IOException {
