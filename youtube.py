@@ -24,27 +24,26 @@ def get_food():
 def get_liked_video():
 
     liked_videos = []
-
     next_page_token = None
-    # while True:
-    response = youtube.videos().list(
-        part='snippet',
-        myRating='like',
-        maxResults=1,
-        pageToken=next_page_token
-    ).execute()
+    while len(liked_videos) < 3:
+        response = youtube.videos().list(
+            part='snippet',
+            myRating='like',
+            maxResults=1,
+            pageToken=next_page_token
+        ).execute()
     # print(response)
     # print(type(response))
-    video_title = response["items"][0]["snippet"]["title"]
-    print(video_title)
-    # if "True" in gpt.is_food(video_title):
-    liked_videos.extend(response.get('items', []))
-        # print("that was a food item")
-    # ['snippet']['title']
-        # next_page_token = response.get('nextPageToken')
+        video_title = response["items"][0]["snippet"]["title"]
+        print(video_title)
+        if "True" in gpt.is_food(video_title):
+            liked_videos.extend(response.get('items', []))
+            print("that was a food item")
+        # ['snippet']['title']
+        next_page_token = response.get('nextPageToken')
     
-        # if not next_page_token:
-        #     break
+        if not next_page_token:
+            break
 
     # Print the list of liked videos
     # for video in liked_videos:
@@ -57,8 +56,9 @@ def get_liked_video():
         # if (os.path.isfile("file")):
         #     with open("testVideo.json", "w") as clearFile:
         #         pass
-    with open("testVideo.json", "w") as jsonOutput:
-        json.dump(response, jsonOutput, indent=4)
+    jsonVideos = {"videos" : liked_videos}
+    with open("food.json", "w") as jsonOutput:
+        json.dump(jsonVideos, jsonOutput, indent=4)
 
         # print(video_url)
         # print(video['snippet']['title'])

@@ -35,6 +35,7 @@ public class GetYouTube {
 
                 String purduePAL3 = "100.69.243.39"; // IPv4 address for dorm
 //                purduePAL3 = "10.186.155.209";
+                purduePAL3 = "100.69.247.38";
                 String port = "5000";
 
                 try {

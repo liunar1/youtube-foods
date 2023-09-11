@@ -44,13 +44,15 @@ public class ParseJSON {
         outputStreamWriter.close();
     }
 
-    public String getImageURL(String jsonString) throws IOException, JSONException {
+    public String getImageURL(String jsonString, int arrayIndex) throws IOException, JSONException {
         JSONObject jsonObject = readJSONString(jsonString);
+        JSONArray videoList = jsonObject.getJSONArray("videos");
+        JSONObject jsonVideo = (JSONObject) videoList.get(arrayIndex);
         JSONObject videoSnippet;
         try {
-            videoSnippet = jsonObject.getJSONObject("snippet");
+            videoSnippet = jsonVideo.getJSONObject("snippet");
         } catch (JSONException e) {
-            JSONArray items = jsonObject.getJSONArray("items");
+            JSONArray items = jsonVideo.getJSONArray("items");
             JSONObject firstItem = (JSONObject) items.get(0);
             videoSnippet = firstItem.getJSONObject("snippet");
         }
