@@ -2,6 +2,7 @@ package com.example.foodapp;
 
 import android.content.Context;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +46,14 @@ public class ParseJSON {
 
     public String getImageURL(String jsonString) throws IOException, JSONException {
         JSONObject jsonObject = readJSONString(jsonString);
-        JSONObject videoSnippet = jsonObject.getJSONObject("snippet");
+        JSONObject videoSnippet;
+        try {
+            videoSnippet = jsonObject.getJSONObject("snippet");
+        } catch (JSONException e) {
+            JSONArray items = jsonObject.getJSONArray("items");
+            JSONObject firstItem = (JSONObject) items.get(0);
+            videoSnippet = firstItem.getJSONObject("snippet");
+        }
         JSONObject videoThumbnail = videoSnippet.getJSONObject("thumbnails");
         JSONObject imageHD = videoThumbnail.getJSONObject("high");
         String imageURL = imageHD.getString("url");

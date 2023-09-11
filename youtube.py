@@ -37,9 +37,9 @@ def get_liked_video():
     # print(type(response))
     video_title = response["items"][0]["snippet"]["title"]
     print(video_title)
-    if "True" in gpt.is_food(video_title):
-        liked_videos.extend(response.get('items', []))
-        print("that was a food item")
+    # if "True" in gpt.is_food(video_title):
+    liked_videos.extend(response.get('items', []))
+        # print("that was a food item")
     # ['snippet']['title']
         # next_page_token = response.get('nextPageToken')
     
@@ -57,8 +57,8 @@ def get_liked_video():
         # if (os.path.isfile("file")):
         #     with open("testVideo.json", "w") as clearFile:
         #         pass
-        # with open("testVideo.json", "a") as jsonOutput:
-        #     json.dump(video, jsonOutput, indent=4)
+    with open("testVideo.json", "w") as jsonOutput:
+        json.dump(response, jsonOutput, indent=4)
 
         # print(video_url)
         # print(video['snippet']['title'])
