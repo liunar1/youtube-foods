@@ -15,9 +15,13 @@ import java.util.concurrent.Executors;
 
 public class GetYouTube {
     private Context context;
+    private YouTubeData youTubeData;
+    private OnApiCallCompleteListener callback;
 
-    public GetYouTube(Context context) {
+    public GetYouTube(Context context, YouTubeData youTubeData, OnApiCallCompleteListener callback) {
         this.context = context;
+        this.youTubeData = youTubeData;
+        this.callback = callback;
     }
 
     public void execute() {
@@ -29,11 +33,12 @@ public class GetYouTube {
             public void run() {
                 String responseString = "";
 
-                String purduePAL3 = "100.69.241.65"; // IPv4 address
+                String purduePAL3 = "100.69.243.39"; // IPv4 address for dorm
+//                purduePAL3 = "10.186.155.209";
                 String port = "5000";
 
                 try {
-                    URL url = new URL("http://" + purduePAL3 + ":" + port + "/bro");
+                    URL url = new URL("http://" + purduePAL3 + ":" + port + "/fetchfood");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -59,6 +64,9 @@ public class GetYouTube {
                     @Override
                     public void run() {
                         Toast.makeText(context, "Good job " + finalResponse, Toast.LENGTH_SHORT).show();
+                        youTubeData.setJsonContent(finalResponse);
+                        callback.onApiCallComplete("final response " + finalResponse);
+//                        System.out.println("final response " + finalResponse);
                     }
                 });
             }

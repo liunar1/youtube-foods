@@ -1,32 +1,26 @@
-# import os
-import openai
 from flask import Flask, request, jsonify
 import youtube
 import json
 
-openai.api_key = ""
-with open("secrets.json", "r") as jsonFile:
-    jsonData = json.loads(jsonFile)
-    openai.api_key = jsonData["gpt_key"]
-    youtubeapi_key = jsonData["youtube_key"]
-openai.FineTuningJob.create(training_file="", model="gpt-3.5-turbo")
-
 app = Flask(__name__)
 
-# categories = ["Cuisine", "YouTuber", "Food", "Festive"] 
+# categories = ["Cuisine", "YouTuber", "Course", "Type", "Festive"] 
 
-# @app.route('/fetchfood', methods=['READ'])
-# def fetchFood():
-#     print("Hello World!")
-#     youtube.fetchPlaylists("https://www.googleapis.com/youtube/v3/playlistItems")
+@app.route('/fetchfood')
+def fetchAllFood():
+    print("Hello World!")
+    youtube.get_liked_video()
+    jsonString = ""
+    with open("testVideo.json", "r") as jsonFile:
+        jsonString = str(json.load(jsonFile))
+    return jsonString
 
-@app.route('/')
-def home():
-    return "Hello world!"
-
-@app.route('/bro')
-def bro():
-    return "every day bro!"
+@app.route('/categorize')
+def categorize():
+    print("Categorizing")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # ipv4 = '10.186.155.209' # 20875 room but 100.69.241.65 is in my dorm
+    ipv4 = '100.69.243.39'
+
+    app.run(host=ipv4, port=5000, debug=True)
