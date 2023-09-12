@@ -1,5 +1,6 @@
 package com.example.foodapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.BitmapFactory;
@@ -8,6 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -23,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements OnApiCallComplete
     private YouTubeData youTubeData = new YouTubeData();
     private String jsonString = null;
 
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +43,31 @@ public class MainActivity extends AppCompatActivity implements OnApiCallComplete
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetYouTube(MainActivity.this, youTubeData, MainActivity.this).execute();
+                databaseReference.child("videos").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            mImageView = (ImageView) findViewById(R.id.imageView);
+                            jsonString = snapshot.getValue().toString();
+                            youTubeData.setJsonContent(jsonString);
+                            try {
+                                Picasso.get().load(jsonData.getImageURL(jsonString, videoCounter)).into(mImageView);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+                            new GetYouTube(MainActivity.this, youTubeData, MainActivity.this).execute();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        throw error.toException();
+                    }
+                });
             }
         });
 
@@ -51,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnApiCallComplete
                     videoCounter += 1;
                     mImageView = (ImageView) findViewById(R.id.imageView);
                     jsonString = youTubeData.getJsonContent();
-                    System.out.println("jsonString" + jsonString);
+//                    System.out.println("jsonString" + jsonString);
                     try {
                         Picasso.get().load(jsonData.getImageURL(jsonString, videoCounter)).into(mImageView);
                     } catch (IOException e) {
@@ -71,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnApiCallComplete
                     videoCounter -= 1;
                     mImageView = (ImageView) findViewById(R.id.imageView);
                     jsonString = youTubeData.getJsonContent();
-                    System.out.println("jsonString" + jsonString);
+//                    System.out.println("jsonString" + jsonString);
                     try {
                         Picasso.get().load(jsonData.getImageURL(jsonString, videoCounter)).into(mImageView);
                     } catch (IOException e) {
@@ -89,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnApiCallComplete
         mImageView = (ImageView) findViewById(R.id.imageView);
         jsonString = youTubeData.getJsonContent();
         System.out.println("jsonString" + jsonString);
+        databaseReference.child("videos").setValue(jsonString);
         try {
             Picasso.get().load(jsonData.getImageURL(jsonString, 0)).into(mImageView);
         } catch (IOException e) {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "869070877601",
+    "project_id": "youtube-foods",
+    "storage_bucket": "youtube-foods.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869070877601:android:5a1314a41e92a64085d1e0",
+        "android_client_info": {
+          "package_name": "com.example.foodapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyn4Oyd4vLH57makWHZVlbtTb3Zx669p0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
