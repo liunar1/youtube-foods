@@ -4,9 +4,9 @@ Android app makes API call to Python Flask API whose specific endpoints make spe
 YouTube API to fetch YouTube data and OpenAI API to classify and sort data into specific categories.
 Android app is all about presenting the data for the user. 
 
-## JSON Data Processing
+## JSON Data 
 
-If first time fetching YouTube data (all of which is food), create JSON file of all food data (sort of like a template) and put categorized 
+Data is stored in Firebase to prevent excessive Flask API calls and costly OpenAI GPT-3.5 usage
 
 ## Note 
 
